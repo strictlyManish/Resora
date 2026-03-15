@@ -41,7 +41,7 @@ const Login = () => {
           <div>
             <input
               type="text"
-              placeholder="email"
+              placeholder="Email"
               {...register("email", {
                 required: "email is required",
                 minLength: {

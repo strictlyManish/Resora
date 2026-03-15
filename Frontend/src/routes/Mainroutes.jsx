@@ -6,7 +6,8 @@ import Public from "../components/Public";
 // Lazy loading pages
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
-const Home = lazy(() => import("../pages/Home"));
+const Profile = lazy(() => import("../pages/Profile"));
+const Music = lazy(() => import("../pages/Music"));
 
 function Mainroutes() {
   return (
@@ -20,10 +21,18 @@ function Mainroutes() {
       <Routes>
         {/* Protected route */}
         <Route
-          path="/"
+          path="/profile"
           element={
             <Protected>
-              <Home />
+              <Profile />
+            </Protected>
+          }
+        />
+        <Route
+          path="/feed"
+          element={
+            <Protected>
+              <Music />
             </Protected>
           }
         />
@@ -46,6 +55,7 @@ function Mainroutes() {
             </Public>
           }
         />
+
       </Routes>
     </Suspense>
   );
