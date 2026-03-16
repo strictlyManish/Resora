@@ -1,19 +1,23 @@
-import React from "react";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-function Public({ children }) {
+function Public() {
   const { user, loading } = useSelector((state) => state.auth);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <main className="min-h-screen flex flex-col items-center justify-center">
+        <p>Checking authentication...</p>
+      </main>
+    );
   }
 
+  // 🔥 If user already logged in → redirect to home
   if (user) {
-    return <Navigate to="/profile" replace />;
+    return <Navigate to="/" replace />;
   }
 
-  return children;
+  return <Outlet />;
 }
 
 export default Public;

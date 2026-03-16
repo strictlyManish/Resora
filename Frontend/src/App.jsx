@@ -1,14 +1,16 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getUser } from "./app/features/auth/userAuth";
 import Mainroutes from "./routes/Mainroutes";
 
 function App() {
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
-  return (
-    <div className="bg-[#232424] text-white">
-      <Mainroutes />
-    </div>
-  );
+  return <Mainroutes />;
 }
 
 export default App;

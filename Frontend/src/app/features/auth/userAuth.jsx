@@ -3,8 +3,8 @@ import API from "../../../api/api";
 
 const initialState = {
   user: null,
-  token: null,
-  loading: false,
+  token: localStorage.getItem("token") || null,
+  loading: true, // ✅ important fix
   error: null,
 };
 
@@ -40,7 +40,6 @@ export const getUser = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await API.get("/auth/get-me");
-      console.log(response)
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data);
@@ -55,6 +54,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
+      localStorage.removeItem("token"); // ✅ cleanup
     },
   },
 
@@ -69,9 +69,12 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+
+        localStorage.setItem("token", action.payload.token); // ✅ persist
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
+        state.user = null;
         state.error = action.payload;
       })
 
@@ -98,11 +101,11 @@ const authSlice = createSlice({
       })
       .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
+        state.user = null; // ✅ important
         state.error = action.payload;
       });
   },
 });
 
 export const { logout } = authSlice.actions;
-
 export default authSlice.reducer;

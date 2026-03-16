@@ -197,7 +197,7 @@ async function GetUserController(req, res) {
 
     const user = await userModel
       .findById(req.user.id)
-      .select("_id username email");
+      .select("_id username email profileImage bio followers following");
 
     if (!user) {
       return res.status(404).json({

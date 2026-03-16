@@ -1,60 +1,35 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Protected from "../components/Protected";
 import Public from "../components/Public";
 
-// Lazy loading pages
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const Profile = lazy(() => import("../pages/Profile"));
-const Music = lazy(() => import("../pages/Music"));
+const Home = lazy(() => import("../pages/Home"));
 
 function Mainroutes() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex-col gap-2 flex items-center justify-center">
-          <p className="text-pink-400">Loading...</p>
+        <div className="min-h-screen bg-[#120e12] flex flex-col items-center justify-center">
+          <p className="text-pink-500">Loading page...</p>
         </div>
       }
     >
       <Routes>
-        {/* Protected route */}
-        <Route
-          path="/profile"
-          element={
-            <Protected>
-              <Profile />
-            </Protected>
-          }
-        />
-        <Route
-          path="/feed"
-          element={
-            <Protected>
-              <Music />
-            </Protected>
-          }
-        />
 
-        {/* Public routes */}
-        <Route
-          path="/login"
-          element={
-            <Public>
-              <Login />
-            </Public>
-          }
-        />
+        {/* Public routes (only for NOT logged in users) */}
+        <Route element={<Public />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
 
-        <Route
-          path="/register"
-          element={
-            <Public>
-              <Register />
-            </Public>
-          }
-        />
+        {/* Protected routes */}
+        <Route element={<Protected />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
 
       </Routes>
     </Suspense>

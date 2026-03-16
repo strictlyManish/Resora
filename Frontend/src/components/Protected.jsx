@@ -1,20 +1,13 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
-import { getUser } from "../app/features/auth/userAuth";
+import { useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
 
-function Protected({ children }) {
-  const dispatch = useDispatch();
+function Protected() {
   const { user, loading } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
 
   if (loading) {
     return (
-      <main className="min-h-screen flex-col gap-2 flex items-center justify-center">
-        <p>Loading...</p>
+      <main className="min-h-screen bg-[#120e12] flex flex-col items-center justify-center">
+        <p className="text-pink-500">Authenticating..</p>
       </main>
     );
   }
@@ -23,7 +16,7 @@ function Protected({ children }) {
     return <Navigate to="/login" replace />;
   }
 
-  return children;
-}
+  return <Outlet />;
+} 
 
 export default Protected;
