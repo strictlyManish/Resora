@@ -1,118 +1,138 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../app/features/auth/userAuth";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Loader2,
+  AlertCircle,
+  ChevronRight,
+} from "lucide-react";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [visibleError, setVisibleError] = useState(null);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { error, loading, user } = useSelector((state) => state.auth);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ mode: "onBlur" });
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const { error, loading, user } = useSelector((state) => state.auth);
-
-  const onSubmit = (data) => {
-    dispatch(
-      loginUser({
-        email: data.email,
-        password: data.password,
-      })
-    );
-  };
+  // Correct implementation of the timed error
+  useEffect(() => {
+    if (error) {
+      setVisibleError(error?.message || "Login failed");
+      const timer = setTimeout(() => setVisibleError(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
+    if (user) navigate("/");
   }, [user, navigate]);
 
+  const onSubmit = (data) => dispatch(loginUser(data));
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#120e12] px-4">
-      <div className="w-full max-w-md p-8 text-white">
-        
-        <div className="flex justify-center mb-6">
-          <img src="/Logo.png" alt="logo" className="h-14 object-contain" />
+    <div className="min-h-screen flex items-center justify-center bg-[#120e12] px-4 selection:bg-pink-500/30">
+      <div className="w-full max-w-md space-y-8">
+        {/* Header */}
+        <div className="text-center">
+          <div className="inline-flex p-3 rounded-2xl bg-gradient-to-tr  mb-4">
+            <img
+              src="/Logo.png"
+              alt="logo"
+              className="h-12 w-12 object-contain"
+            />
+          </div>
+          <h1 className="text-3xl font-bold text-white">Login.</h1>
+          <p className="text-gray-400 mt-2">
+            Enter your details to access your account
+          </p>
         </div>
 
-        <h1 className="text-3xl font-bold text-center mb-2">Log in</h1>
-
-        <p className="text-gray-400 text-center text-sm mb-8">
-          Log in and start managing your candidates
-        </p>
+        {/* Error Alert with Animation */}
+        {visibleError && (
+          <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-red-400 text-sm animate-in slide-in-from-top-2 duration-300">
+            <AlertCircle size={18} className="shrink-0" />
+            <p className="flex-1">{visibleError}</p>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-
-          {/* email */}
-          <div>
-            <input
-              type="text"
-              placeholder="Email"
-              {...register("email", {
-                required: "email is required",
-                minLength: {
-                  value: 3,
-                  message: "Minimum 3 characters required",
-                },
-              })}
-              className="w-full px-4 py-3 rounded-lg bg-[#230b29] border border-[#17464F] text-white"
-            />
-
+          <div className="space-y-1">
+            <div className="relative group">
+              <Mail
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-pink-500 transition-colors"
+                size={18}
+              />
+              <input
+                {...register("email", { required: "Email is required" })}
+                type="email"
+                placeholder="Email address"
+                className="w-full pl-12 pr-4 py-3.5 bg-[#1a161a] border border-white/5 rounded-xl text-white focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 transition-all outline-none"
+              />
+            </div>
             {errors.email && (
-              <p className="text-red-400 text-sm mt-1">
+              <p className="text-red-400 text-xs ml-1">
                 {errors.email.message}
               </p>
             )}
           </div>
 
-          {/* password */}
-          <div>
-            <input
-              type="password"
-              placeholder="Password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 4,
-                  message: "Password must be at least 4 characters",
-                },
-              })}
-              className="w-full px-4 py-3 rounded-lg bg-[#230b29] border border-[#17464F] text-white"
-            />
-
-            {errors.password && (
-              <p className="text-red-400 text-sm mt-1">
-                {errors.password.message}
-              </p>
-            )}
+          <div className="space-y-1">
+            <div className="relative group">
+              <Lock
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-pink-500 transition-colors"
+                size={18}
+              />
+              <input
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: 4,
+                })}
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                className="w-full pl-12 pr-12 py-3.5 bg-[#1a161a] border border-white/5 rounded-xl text-white focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 transition-all outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
-          {/* ❗ show backend error */}
-          {error && (
-            <p className="text-red-500 text-sm text-center">
-              {error?.message || "Login failed"}
-            </p>
-          )}
-
-          {/* button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-pink-500 hover:bg-pink-600 rounded-lg font-semibold text-black"
+            className="w-full bg-pink-500 hover:bg-pink-600 disabled:bg-pink-500/50 py-4 rounded-xl font-bold text-white shadow-lg shadow-pink-500/10 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? (
+              <Loader2 className="animate-spin" size={20} />
+            ) : (
+              "Sign In"
+            )}
+            {!loading && <ChevronRight size={18} />}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-400 mt-6">
-          Don't have a Resora account yet?{" "}
-          <a href="/register" className="text-pink-400">
-            Register
-          </a>
+        <p className="text-center text-gray-500 text-sm">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-pink-500 font-semibold">
+            Join Resora
+          </Link>
         </p>
       </div>
     </div>

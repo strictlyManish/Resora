@@ -9,7 +9,7 @@ const authRoutes  = express.Router();
 
 authRoutes.post("/register",RegisterController);
 authRoutes.post("/login",LoginController);
-authRoutes.post("/logout",LogoutController);
+authRoutes.get("/logout",LogoutController);
 
 
 
