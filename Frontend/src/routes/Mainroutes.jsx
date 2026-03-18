@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Protected from "../components/Protected";
 import Public from "../components/Public";
+import Accounts from "../pages/Accounts";
 
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
@@ -23,6 +24,7 @@ function Mainroutes() {
         <Route element={<Public />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/update" element={<Accounts/>} />
         </Route>
 
         {/* Protected routes */}
