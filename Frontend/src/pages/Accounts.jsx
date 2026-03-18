@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux"; 
+
 import { 
   ChevronLeft, 
   Camera, 
@@ -10,12 +12,16 @@ import {
   Loader2 
 } from "lucide-react";
 
+import { updateProfile } from "../app/features/update/userProfile"; 
+
 function Accounts() {
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [preview, setPreview] = useState(null);
+  const dispatch = useDispatch(); 
+  const { user } = useSelector((state) => state.auth); 
 
-  // Initialize React Hook Form
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [preview, setPreview] = useState(user?.profileImage || null);
+
   const {
     register,
     handleSubmit,
@@ -23,14 +29,12 @@ function Accounts() {
     watch,
   } = useForm({
     defaultValues: {
-      bio: "",
+      bio: user?.bio || "", 
     }
   });
 
-  // Watch for image changes to update preview
   const profileImage = watch("profileImage");
 
-  // Handle image preview logic
   const handleImagePreview = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -38,17 +42,32 @@ function Accounts() {
     }
   };
 
+  // ✅ REAL SUBMIT (UI untouched)
   const onSubmit = async (data) => {
     setIsSubmitting(true);
-    // Simulate API Call
-    console.log("Form Data:", data);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const file = data.profileImage?.[0];
+
+    const resultAction = await dispatch(
+      updateProfile({
+        id: user._id,
+        bio: data.bio,
+        file,
+      })
+    );
+
     setIsSubmitting(false);
-    alert("Profile updated successfully!");
+
+    if (updateProfile.fulfilled.match(resultAction)) {
+      navigate("/profile"); // ✅ redirect after success
+    } else {
+      alert(resultAction.payload || "Update failed");
+    }
   };
 
   return (
     <div className="bg-[#120e12] text-white min-h-screen flex flex-col max-w-2xl mx-auto shadow-2xl">
+      
       {/* Header */}
       <header className="px-4 py-4 flex items-center gap-4 sticky top-0 bg-[#120e12]/80 backdrop-blur-md z-20 border-b border-white/5">
         <button 
@@ -133,7 +152,7 @@ function Accounts() {
 
           <hr className="border-white/5" />
 
-          {/* Danger Zone */}
+          {/* Danger Zone (unchanged) */}
           <section className="pt-4">
             <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-5">
               <div className="flex items-center gap-3 text-red-400 mb-4">

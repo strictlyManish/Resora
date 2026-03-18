@@ -56,6 +56,7 @@ function Profile() {
                 src={user?.profileImage || "https://picsum.photos/200"}
                 alt="profile"
                 className="w-full h-full rounded-full object-cover bg-[#120e12] p-1"
+                loading="lazy"
               />
             </div>
           </div>
@@ -70,7 +71,7 @@ function Profile() {
         {/* Bio Section */}
         <section className="mt-6">
           <p className="font-bold text-lg">@{user?.username}</p>
-          <p className="text-gray-300 text-sm leading-relaxed mt-1 whitespace-pre-wrap">
+          <p onClick={()=>navigate(`/profile/${user._id}`)} className="text-gray-300 text-sm leading-relaxed mt-1 whitespace-pre-wrap">
             {user?.bio || "No bio yet. Tap to edit."}
           </p>
         </section>
@@ -83,8 +84,8 @@ function Profile() {
           <button className="col-span-3 bg-white/10 hover:bg-white/20 active:scale-95 transition-all font-semibold py-2.5 rounded-xl border border-white/10">
             Message
           </button>
-          <button className="col-span-1 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-xl transition-all">
-            <UserRoundPlus size={20} />
+          <button onClick={()=>dispatch(logoutUser())}  className="col-span-1 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-xl transition-all">
+            <LogOut size={18} />
           </button>
         </section>
 
@@ -111,14 +112,6 @@ function Profile() {
           </div>
         </nav>
       </main>
-
-      {/* Footer / Logout */}
-      <footer className="p-6">
-        <button onClick={()=>dispatch(logoutUser())} className="w-full flex items-center justify-center gap-2 text-red-400 hover:bg-red-400/10 py-3 rounded-2xl transition-all">
-          <LogOut size={18} />
-          <span className="font-semibold">Logout</span>
-        </button>
-      </footer>
     </div>
   );
 }

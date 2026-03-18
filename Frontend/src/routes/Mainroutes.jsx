@@ -2,12 +2,14 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Protected from "../components/Protected";
 import Public from "../components/Public";
-import Accounts from "../pages/Accounts";
+import PageNotFound from "../pages/PageNotFound";
+
 
 const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const Profile = lazy(() => import("../pages/Profile"));
 const Home = lazy(() => import("../pages/Home"));
+const Accounts = lazy(()=> import("../pages/Accounts"))
 
 function Mainroutes() {
   return (
@@ -24,15 +26,15 @@ function Mainroutes() {
         <Route element={<Public />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/update" element={<Accounts/>} />
         </Route>
 
         {/* Protected routes */}
         <Route element={<Protected />}>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<Accounts/>} />
         </Route>
-
+        <Route path="*" element={<PageNotFound/>} />
       </Routes>
     </Suspense>
   );
