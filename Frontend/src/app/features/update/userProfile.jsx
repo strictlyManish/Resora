@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../../api/api";
 
+
 const initialState = {
   user: null,
   loading: false,
   error: null,
 };
+
 
 export const updateProfile = createAsyncThunk(
   "profile/updateProfile",
@@ -27,6 +29,8 @@ export const updateProfile = createAsyncThunk(
       return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
   }
+
+
 );
 
 const ProfileSlice = createSlice({

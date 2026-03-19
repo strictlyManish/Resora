@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../../api/api";
+import { updateProfile } from "../update/userProfile";
 
 // ---------------- INITIAL STATE ----------------
 const initialState = {
@@ -20,7 +21,7 @@ export const registerUser = createAsyncThunk(
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
-  }
+  },
 );
 
 // ✅ LOGIN
@@ -33,21 +34,18 @@ export const loginUser = createAsyncThunk(
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
-  }
+  },
 );
 
 // ✅ GET CURRENT USER
-export const getUser = createAsyncThunk(
-  "auth/getUser",
-  async (_, thunkAPI) => {
-    try {
-      const res = await API.get("/auth/get-me");
-      return res.data.user;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data?.message);
-    }
+export const getUser = createAsyncThunk("auth/getUser", async (_, thunkAPI) => {
+  try {
+    const res = await API.get("/auth/get-me");
+    return res.data.user;
+  } catch (err) {
+    return thunkAPI.rejectWithValue(err.response?.data?.message);
   }
-);
+});
 
 // ✅ LOGOUT
 export const logoutUser = createAsyncThunk(
@@ -59,7 +57,7 @@ export const logoutUser = createAsyncThunk(
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
-  }
+  },
 );
 
 // ---------------- SLICE ----------------
@@ -103,6 +101,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      
 
       // -------- GET USER --------
       .addCase(getUser.pending, (state) => {
@@ -115,6 +114,10 @@ const authSlice = createSlice({
       .addCase(getUser.rejected, (state) => {
         state.loading = false;
         state.user = null;
+      })
+
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.user = action.payload.user;
       })
 
       // -------- LOGOUT --------

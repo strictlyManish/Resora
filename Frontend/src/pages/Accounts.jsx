@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { updateProfile } from "../app/features/update/userProfile"; 
+import { getUser } from "../app/features/auth/userAuth";
 
 function Accounts() {
   const navigate = useNavigate();
@@ -59,8 +60,10 @@ function Accounts() {
     setIsSubmitting(false);
 
     if (updateProfile.fulfilled.match(resultAction)) {
-      navigate("/profile"); // ✅ redirect after success
+      navigate("/profile");
+      dispatch(getUser)
     } else {
+
       alert(resultAction.payload || "Update failed");
     }
   };
@@ -153,8 +156,8 @@ function Accounts() {
           <hr className="border-white/5" />
 
           {/* Danger Zone (unchanged) */}
-          <section className="pt-4">
-            <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-5">
+          <section className="pt-3">
+            <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-3">
               <div className="flex items-center gap-3 text-red-400 mb-4">
                 <AlertTriangle size={20} />
                 <h2 className="font-bold uppercase tracking-widest text-xs">Danger Zone</h2>

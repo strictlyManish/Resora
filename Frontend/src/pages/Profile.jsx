@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { BoomBox, ChevronLeft, Music, UserRoundPen, UserRoundPlus, LogOut } from "lucide-react";
 import { logoutUser } from "../app/features/auth/userAuth";
 
+
 // Helper component for Stat items to keep code DRY
 const StatItem = ({ label, count }) => (
   <div className="flex flex-col items-center">
@@ -33,6 +34,7 @@ function Profile() {
     );
   }
 
+
   return (
     <div className="min-h-screen bg-[#120e12] text-white flex flex-col max-w-2xl mx-auto shadow-2xl">
       
@@ -53,7 +55,7 @@ function Profile() {
           <div className="relative group">
             <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[3px] shadow-lg">
               <img
-                src={user?.profileImage || "https://picsum.photos/200"}
+                src={user?.profileImage}
                 alt="profile"
                 className="w-full h-full rounded-full object-cover bg-[#120e12] p-1"
                 loading="lazy"
@@ -71,15 +73,15 @@ function Profile() {
         {/* Bio Section */}
         <section className="mt-6">
           <p className="font-bold text-lg">@{user?.username}</p>
-          <p onClick={()=>navigate(`/profile/${user._id}`)} className="text-gray-300 text-sm leading-relaxed mt-1 whitespace-pre-wrap">
+          <p className="text-gray-300 text-sm leading-relaxed mt-1 whitespace-pre-wrap">
             {user?.bio || "No bio yet. Tap to edit."}
           </p>
         </section>
 
         {/* Action Buttons - More efficient flex grid */}
         <section className="grid grid-cols-7 gap-2 mt-6">
-          <button className="col-span-3 bg-pink-600 hover:bg-pink-700 active:scale-95 transition-all font-semibold py-2.5 rounded-xl">
-            Follow
+          <button onClick={()=>navigate(`/profile/${user._id}`)} className="col-span-3 bg-pink-600 hover:bg-pink-700 active:scale-95 transition-all font-semibold py-2.5 rounded-xl">
+            Edit
           </button>
           <button className="col-span-3 bg-white/10 hover:bg-white/20 active:scale-95 transition-all font-semibold py-2.5 rounded-xl border border-white/10">
             Message

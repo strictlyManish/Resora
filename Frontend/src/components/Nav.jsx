@@ -3,20 +3,20 @@ import { NavLink } from "react-router-dom";
 
 function Nav() {
   const baseStyle =
-    "p-2 rounded-full transition duration-200 flex items-center justify-center";
+    "rounded-full transition duration-200 flex items-center justify-center px-2 py-2";
 
-  const activeStyle = "bg-white/20 scale-110";
+  const activeStyle = "bg-pink-500 scale-110";
 
   return (
     <div
       className="fixed bottom-6 left-1/2 -translate-x-1/2 
-                 px-6 py-3 
+                 px-3 py-3 
                  bg-white/10 backdrop-blur-md 
                  border border-white/20 
                  rounded-full 
                  shadow-lg text-white"
     >
-      <div className="flex gap-6">
+      <div className="flex gap-5">
         
         <NavLink
           to="/"
