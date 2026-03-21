@@ -7,7 +7,7 @@ function Public() {
   if (loading) {
     return (
       <main className="min-h-screen bg-[#120e12] text-pink-500 flex flex-col items-center justify-center">
-        <p>Checking authentication...</p>
+        <p>Authenticating...</p>
       </main>
     );
   }

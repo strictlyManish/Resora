@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Protected from "../components/Protected";
 import Public from "../components/Public";
 import PageNotFound from "../pages/PageNotFound";
+import Plays from "../components/Plays";
 
 
 const Login = lazy(() => import("../pages/Login"));
@@ -33,6 +34,7 @@ function Mainroutes() {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:id" element={<Accounts/>} />
+          <Route path="/songs/:id" element={<Plays/>} />
         </Route>
         <Route path="*" element={<PageNotFound/>} />
       </Routes>

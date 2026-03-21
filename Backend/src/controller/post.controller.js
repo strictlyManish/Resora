@@ -1,34 +1,51 @@
 const SongModel = require("../model/post.model");
+const UserModel = require("../model/app.model");
 
 async function UserPostController(req, res) {
   try {
+    
+
+    // 📁 File validation
     if (!req.file) {
       return res.status(400).json({ message: "Song file is required" });
     }
 
-    if (!req.body.title || !req.body.artist) {
+    const { title, artist, coverImage, genre } = req.body;
+
+    // 📝 Field validation
+    if (!title || !artist) {
       return res.status(400).json({ message: "Title and artist required" });
     }
 
+    // 🎵 Create song
     const newSong = new SongModel({
-      title: req.body.title,
-      artist: req.body.artist,
+      title,
+      artist,
       audioUrl: req.file.path,
-      coverImage: req.body.coverImage,
-      genre: req.body.genre,
+      coverImage,
+      genre,
     });
 
     await newSong.save();
 
-    res.status(200).json({
+    // 👤 Update user posts
+    await UserModel.findByIdAndUpdate(
+      req.user.id,
+      { $push: { posts: newSong } },
+      { returnDocument: 'after' } // ✅ FIXED
+    );
+
+    // ✅ Response
+    res.status(201).json({
       message: "Song uploaded",
       song: newSong,
     });
+
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 }
-
 async function GetAllSongs(req, res) {
   try {
     const songs = await SongModel.find().sort({ createdAt: -1 });;

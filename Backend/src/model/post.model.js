@@ -8,7 +8,7 @@ const SongSchema = new mongoose.Schema(
     },
     artist: {
       type: String,
-      required: true,
+      ref: "User",
     },
     audioUrl: {
       type: String,
@@ -20,7 +20,7 @@ const SongSchema = new mongoose.Schema(
     },
     genre: {
       type: String,
-      enum: ["pop", "rock", "hiphop", "lofi", "bollywood", "other" ,"bhakti"],
+      enum: ["pop", "rock", "hiphop", "lofi", "bollywood", "other", "bhakti" ,"party"],
       required: true,
     },
     album: {
@@ -31,8 +31,8 @@ const SongSchema = new mongoose.Schema(
       ref: "User",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const SongModel = mongoose.model("post",SongSchema);
+const SongModel = mongoose.model("Song", SongSchema);
 module.exports = SongModel;
