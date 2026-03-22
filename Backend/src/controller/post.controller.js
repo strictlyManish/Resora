@@ -3,8 +3,6 @@ const UserModel = require("../model/app.model");
 
 async function UserPostController(req, res) {
   try {
-    
-
     // 📁 File validation
     if (!req.file) {
       return res.status(400).json({ message: "Song file is required" });
@@ -32,7 +30,7 @@ async function UserPostController(req, res) {
     await UserModel.findByIdAndUpdate(
       req.user.id,
       { $push: { posts: newSong } },
-      { returnDocument: 'after' } // ✅ FIXED
+      { returnDocument: "after" }, // ✅ FIXED
     );
 
     // ✅ Response
@@ -40,7 +38,6 @@ async function UserPostController(req, res) {
       message: "Song uploaded",
       song: newSong,
     });
-
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err.message });
@@ -48,18 +45,42 @@ async function UserPostController(req, res) {
 }
 async function GetAllSongs(req, res) {
   try {
-    const songs = await SongModel.find().sort({ createdAt: -1 });;
+    const songs = await SongModel.find().sort({ createdAt: -1 });
 
     res.status(200).json({
-      message: 'Details fetched',
-      songs
+      message: "Details fetched",
+      songs,
     });
   } catch (error) {
     res.status(500).json({
-      message: 'Error fetching songs',
-      error: error.message
+      message: "Error fetching songs",
+      error: error.message,
     });
   }
 }
 
-module.exports = {UserPostController,GetAllSongs};
+async function GetCurrentSong(req, res) {
+  try {
+    const { id } = req.params;
+
+    const currentSong = await SongModel.findById(id).select("-createdAt -updatedAt -__v -_id");
+
+    if (!currentSong) {
+      return res.status(404).json({
+        message: "Song not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Song Fetched",
+      currentSong,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+}
+
+module.exports = { UserPostController, GetAllSongs, GetCurrentSong };

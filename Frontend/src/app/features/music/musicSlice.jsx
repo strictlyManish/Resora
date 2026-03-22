@@ -15,10 +15,24 @@ export const fetchMusic = createAsyncThunk(
       return res.data.songs;
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Something went wrong"
+        error.response?.data?.message || "Something went wrong",
       );
     }
-  }
+  },
+);
+
+export const Currentsong = createAsyncThunk(
+  "music/fetchCurrentSong",
+  async ({ id }, thunkAPI) => {
+    try {
+      const res = await API.get(`/song/${id}`);
+      return res.data.currentSong;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong",
+      );
+    }
+  },
 );
 
 const musicSlice = createSlice({
@@ -40,6 +54,18 @@ const musicSlice = createSlice({
         state.music = action.payload; // adjust if needed
       })
       .addCase(fetchMusic.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(Currentsong.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(Currentsong.fulfilled, (state, action) => {
+        state.loading = false;
+        state.music = action.payload; // adjust if needed
+      })
+      .addCase(Currentsong.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

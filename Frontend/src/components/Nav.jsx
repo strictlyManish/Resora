@@ -1,4 +1,4 @@
-import { CircleUserRound, CopyPlus, Earth, Music } from "lucide-react";
+import { CirclePlus, CircleUserRound, Music } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 function Nav() {
@@ -27,13 +27,14 @@ function Nav() {
           <Music />
         </NavLink>
 
+     
         <NavLink
-          to="/home"
+          to="/create"
           className={({ isActive }) =>
             `${baseStyle} ${isActive ? activeStyle : "hover:bg-white/10"}`
           }
         >
-          <Earth />
+          <CirclePlus />
         </NavLink>
 
         <NavLink
@@ -45,14 +46,6 @@ function Nav() {
           <CircleUserRound />
         </NavLink>
 
-        <NavLink
-          to="/create"
-          className={({ isActive }) =>
-            `${baseStyle} ${isActive ? activeStyle : "hover:bg-white/10"}`
-          }
-        >
-          <CopyPlus />
-        </NavLink>
 
       </div>
     </div>
