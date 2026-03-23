@@ -23,9 +23,6 @@ const SongSchema = new mongoose.Schema(
       enum: ["pop", "rock", "hiphop", "lofi", "bollywood", "other", "bhakti" ,"party"],
       required: true,
     },
-    album: {
-      type: String,
-    },
     uploadedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

@@ -70,7 +70,7 @@ function Plays() {
     <div className="h-screen relative bg-[#120e12] overflow-hidden font-sans">
       {/* Functional Back Button - Fixed with high z-index and styling */}
       <button 
-        onClick={() => navigate(-1)} 
+        onClick={() => navigate('/songs')} 
         className="absolute top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 bg-black/40 hover:bg-black/70 backdrop-blur-md text-white/90 hover:text-white rounded-full transition-all border border-white/10"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

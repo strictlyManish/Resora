@@ -11,6 +11,7 @@ const Register = lazy(() => import("../pages/Register"));
 const Profile = lazy(() => import("../pages/Profile"));
 const Home = lazy(() => import("../pages/Home"));
 const Accounts = lazy(()=> import("../pages/Accounts"))
+const Creat = lazy(()=> import("../pages/Creat"))
 
 function Mainroutes() {
   return (
@@ -32,6 +33,7 @@ function Mainroutes() {
         {/* Protected routes */}
         <Route element={<Protected />}>
           <Route path="/" element={<Home />} />
+          <Route path="/create" element={<Creat/>}/>
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:id" element={<Accounts/>} />
           <Route path="/songs/:id" element={<Plays/>} />
