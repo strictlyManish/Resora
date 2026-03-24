@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchMusic } from "../app/features/music/musicSlice";
-import {Sparkles} from "lucide-react"
+import { Loader, Sparkles } from "lucide-react";
 
 const FILTERS = [
   { label: <Sparkles />, color: "bg-blue-500" },
@@ -14,19 +14,30 @@ const FILTERS = [
 
 function Home() {
   const dispatch = useDispatch();
-  const { musicList: music, loading, error } = useSelector((state) => state.music);
+  const {
+    musicList: music,
+    loading,
+    error,
+  } = useSelector((state) => state.music);
 
   useEffect(() => {
     dispatch(fetchMusic());
   }, [dispatch]);
 
-  if (loading) return <p className="text-pink-500">Loading...</p>;
+  if (loading)
+    return (
+      <main className="min-h-screen bg-[#120e12] flex items-center justify-center">
+        <Loader color="pink" />
+      </main>
+    );
   if (error) return <p className="text-red-500">{error}</p>;
   if (!music || music.length === 0) return <p>No music found.</p>;
 
   return (
     <div className="max-h-screen h-screen bg-[#120e12] text-white px-4 py-3 overflow-y-auto">
-      <h1 className="text-3xl w-[60vw] font-bold mb-4 select-none">Your Favorite <span className="text-pink-500">Stream</span></h1>
+      <h1 className="text-3xl w-[60vw] font-bold mb-4 select-none">
+        Your Favorite <span className="text-pink-500">Stream</span>
+      </h1>
 
       <div className="flex overflow-auto justify-center items-center gap-3 mb-6 capitalize">
         {FILTERS.map(({ label, color }) => (
