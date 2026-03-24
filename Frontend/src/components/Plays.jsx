@@ -19,7 +19,7 @@ const formatTime = (time) => {
 function Plays() {
   const { id } = useParams();
   const navigate = useNavigate(); // Hook to handle the back button
-  const { music, error, loading } = useSelector((state) => state.music);
+  const { currentSong: music, error, loading } = useSelector((state) => state.music);
   const dispatch = useDispatch();
 
   // Audio References and State

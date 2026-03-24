@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../../api/api";
 
 const initialState = {
-  music: [],
+  musicList: [],
+  currentSong: null,
   loading: false,
   error: null,
 };
@@ -35,7 +36,6 @@ export const Currentsong = createAsyncThunk(
   },
 );
 
-
 export const CreatePost = createAsyncThunk(
   "music/create",
   async (data, thunkAPI) => {
@@ -46,8 +46,6 @@ export const CreatePost = createAsyncThunk(
       formData.append("artist", data.artist);
       formData.append("genre", data.genre);
       formData.append("coverImage", data.coverImage);
-
-      // ✅ FIXED (this is the main bug)
       formData.append("audioUrl", data.audioUrl[0]);
 
       const response = await API.post("/upload", formData, {
@@ -74,37 +72,42 @@ const musicSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // --- Fetch All Music ---
       .addCase(fetchMusic.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchMusic.fulfilled, (state, action) => {
         state.loading = false;
-        state.music = action.payload;
+        state.musicList = action.payload; // Saves to musicList array
       })
       .addCase(fetchMusic.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
+      
+      // --- Fetch Single Song ---
       .addCase(Currentsong.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(Currentsong.fulfilled, (state, action) => {
         state.loading = false;
-        state.music = action.payload;
+        state.currentSong = action.payload; // Saves to currentSong object
       })
       .addCase(Currentsong.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
+      
+      // --- Create Post ---
       .addCase(CreatePost.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(CreatePost.fulfilled, (state, action) => {
         state.loading = false;
-        state.music = action.payload;
+        state.musicList.push(action.payload)
       })
       .addCase(CreatePost.rejected, (state, action) => {
         state.loading = false;

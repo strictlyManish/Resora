@@ -2,17 +2,19 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchMusic } from "../app/features/music/musicSlice";
+import {Sparkles} from "lucide-react"
 
 const FILTERS = [
-  { label: "AI Recommended", color: "bg-blue-500" },
+  { label: <Sparkles />, color: "bg-blue-500" },
   { label: "Party", color: "bg-pink-600" },
   { label: "Bhakti", color: "bg-pink-600" },
   { label: "Pop", color: "bg-pink-600" },
+  { label: "New", color: "bg-pink-600" },
 ];
 
 function Home() {
   const dispatch = useDispatch();
-  const { music, loading, error } = useSelector((state) => state.music);
+  const { musicList: music, loading, error } = useSelector((state) => state.music);
 
   useEffect(() => {
     dispatch(fetchMusic());
@@ -24,9 +26,9 @@ function Home() {
 
   return (
     <div className="max-h-screen h-screen bg-[#120e12] text-white px-4 py-3 overflow-y-auto">
-      <h1 className="text-3xl font-extrabold mb-4 select-none">Music Library</h1>
+      <h1 className="text-3xl w-[60vw] font-bold mb-4 select-none">Your Favorite <span className="text-pink-500">Stream</span></h1>
 
-      <div className="flex flex-wrap items-center gap-3 mb-6 capitalize">
+      <div className="flex overflow-auto justify-center items-center gap-3 mb-6 capitalize">
         {FILTERS.map(({ label, color }) => (
           <p
             key={label}
