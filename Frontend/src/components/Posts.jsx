@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom"; // fixed import
+import { Link } from "react-router-dom";
 import { fetchMusic } from "../app/features/music/musicSlice";
+import { CirclePlay } from "lucide-react";
 
 function Posts() {
   const dispatch = useDispatch();
@@ -11,30 +12,30 @@ function Posts() {
     dispatch(fetchMusic());
   }, [dispatch]);
 
+  // Ensure music is always an array to prevent .map() errors
+  const musicList = Array.isArray(music) ? music : [];
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <>
-      {music?.length > 0 ? (
-        music.map((song) => (
+      {musicList.length > 0 ? (
+        musicList.map((song) => (
           <Link
             key={song._id}
-            to={`/songs/${song._id}`} // added a destination
+            to={`/songs/${song._id}`}
             style={{
               backgroundImage: `url(${song.coverImage})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
             }}
-            className="w-full h-44 p-2 rounded-lg relative"
+            className="w-full h-44 p-2 rounded-lg relative overflow-hidden"
           >
-            <div className="bg-black/60 text-white absolute bottom-0 left-0 w-full p-2 rounded-b-lg backdrop-blur-md">
-              <p className="truncate font-bold text-[12px]">{song.title}</p>
-              <p className="text-sm opacity-80">{song.artist}</p>
-              <span className="text-xs uppercase bg-black px-2 py-1 rounded-full">
-                {song.genre}
-              </span>
+            <div className="bg-black/50 text-white flex items-center gap-2 absolute bottom-0 left-0 w-full p-2 rounded-b-lg backdrop-blur-2xl">
+              <CirclePlay size={20} />
+              <p className="truncate font-bold text-xs">{song.title.slice(0, 20)}</p>
             </div>
           </Link>
         ))

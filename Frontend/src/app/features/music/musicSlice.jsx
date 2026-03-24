@@ -35,6 +35,35 @@ export const Currentsong = createAsyncThunk(
   },
 );
 
+
+export const CreatePost = createAsyncThunk(
+  "music/create",
+  async (data, thunkAPI) => {
+    try {
+      const formData = new FormData();
+
+      formData.append("title", data.title);
+      formData.append("artist", data.artist);
+      formData.append("genre", data.genre);
+      formData.append("coverImage", data.coverImage);
+
+      // ✅ FIXED (this is the main bug)
+      formData.append("audioUrl", data.audioUrl[0]);
+
+      const response = await API.post("/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response?.data);
+    }
+  }
+);
+
 const musicSlice = createSlice({
   name: "music",
   initialState,
@@ -51,7 +80,7 @@ const musicSlice = createSlice({
       })
       .addCase(fetchMusic.fulfilled, (state, action) => {
         state.loading = false;
-        state.music = action.payload; // adjust if needed
+        state.music = action.payload;
       })
       .addCase(fetchMusic.rejected, (state, action) => {
         state.loading = false;
@@ -63,9 +92,21 @@ const musicSlice = createSlice({
       })
       .addCase(Currentsong.fulfilled, (state, action) => {
         state.loading = false;
-        state.music = action.payload; // adjust if needed
+        state.music = action.payload;
       })
       .addCase(Currentsong.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(CreatePost.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(CreatePost.fulfilled, (state, action) => {
+        state.loading = false;
+        state.music = action.payload;
+      })
+      .addCase(CreatePost.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

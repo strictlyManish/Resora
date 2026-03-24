@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
+import { Loader} from "lucide-react"
+
 
 function Public() {
   const { user, loading } = useSelector((state) => state.auth);
@@ -7,7 +9,7 @@ function Public() {
   if (loading) {
     return (
       <main className="min-h-screen bg-[#120e12] text-pink-500 flex flex-col items-center justify-center">
-        <p>Authenticating...</p>
+        <Loader color="pink" />
       </main>
     );
   }

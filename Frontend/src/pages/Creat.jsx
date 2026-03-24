@@ -1,5 +1,9 @@
 import { useForm } from "react-hook-form";
-import { Music, User, Upload, Image, ListMusic } from "lucide-react";
+import { Music, User, Upload, Image, ListMusic, UploadIcon } from "lucide-react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { CreatePost } from "../app/features/music/musicSlice";
+import { useNavigate } from "react-router-dom";
 
 function Create() {
   const {
@@ -9,19 +13,31 @@ function Create() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    try {
-      console.log(data);
-      // simulate API
-      await new Promise((res) => setTimeout(res, 2000));
-      alert("Uploaded successfully!");
-    } catch (err) {
-      console.error(err);
-      alert("Upload failed!");
-    }
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const [imgError, setImgError] = useState(false);
+  const {loading,error} = useSelector((state)=>state.music);
+
+
+  const onSubmit = (data) => {
+    dispatch(CreatePost(data));
+    navigate("/")
   };
 
-  const coverUrl = watch("cover");
+  const coverUrl = watch("coverImage");
+
+
+  if(loading){
+    return  <main className="min-h-screen bg-[#120e12] flex items-center justify-center">
+        <UploadIcon color="pink" />
+      </main>
+  }
+
+  if(error){
+    return <main className="min-h-screen bg-[#120e12] flex items-center justify-center">
+        <p className="text-pink-500 animate-pulse">Uplod again.</p>
+      </main>
+  }
 
   return (
     <div className="min-h-screen bg-[#120e12] text-white px-4 py-6 flex justify-center">
@@ -29,6 +45,7 @@ function Create() {
         <h1 className="text-2xl font-bold mb-6">Create Post</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+
           {/* Title */}
           <div>
             <label className="text-sm text-gray-300 mb-1 flex items-center gap-2">
@@ -40,9 +57,7 @@ function Create() {
               className="w-full px-4 py-2 rounded-lg bg-[#1e1a1e] border border-gray-700 focus:ring-2 focus:ring-pink-500 outline-none"
             />
             {errors.title && (
-              <p className="text-red-400 text-sm mt-1">
-                {errors.title.message}
-              </p>
+              <p className="text-red-400 text-sm mt-1">{errors.title.message}</p>
             )}
           </div>
 
@@ -57,13 +72,11 @@ function Create() {
               className="w-full px-4 py-2 rounded-lg bg-[#1e1a1e] border border-gray-700 focus:ring-2 focus:ring-pink-500 outline-none"
             />
             {errors.artist && (
-              <p className="text-red-400 text-sm mt-1">
-                {errors.artist.message}
-              </p>
+              <p className="text-red-400 text-sm mt-1">{errors.artist.message}</p>
             )}
           </div>
 
-          {/* Audio File */}
+          {/* Audio */}
           <div>
             <label className="text-sm text-gray-300 mb-1 flex items-center gap-2">
               <Upload size={16} /> Audio File
@@ -71,19 +84,19 @@ function Create() {
             <input
               type="file"
               accept="audio/*"
-              {...register("audio", {
+              {...register("audioUrl", {
                 required: "Audio file is required",
               })}
               className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-pink-600 file:text-white hover:file:bg-pink-700"
             />
-            {errors.audio && (
+            {errors.audioUrl && (
               <p className="text-red-400 text-sm mt-1">
-                {errors.audio.message}
+                {errors.audioUrl.message}
               </p>
             )}
           </div>
 
-          {/* Cover Image */}
+          {/* Cover URL */}
           <div>
             <label className="text-sm text-gray-300 mb-1 flex items-center gap-2">
               <Image size={16} /> Cover Image URL
@@ -91,32 +104,28 @@ function Create() {
 
             <input
               type="url"
-              {...register("cover", {
+              {...register("coverImage", {
                 required: "Cover image URL is required",
-                pattern: {
-                  value: /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$/i,
-                  message: "Enter a valid image URL",
-                },
               })}
-              placeholder="https://example.com/image.jpg"
+              placeholder="https://images.unsplash.com/..."
               className="w-full px-4 py-2 rounded-lg bg-[#1e1a1e] border border-gray-700 focus:ring-2 focus:ring-pink-500 outline-none"
+              onChange={() => setImgError(false)}
             />
 
-            {errors.cover && (
+            {errors.coverImage && (
               <p className="text-red-400 text-sm mt-1">
-                {errors.cover.message}
+                {errors.coverImage.message}
               </p>
             )}
 
-            {/* Preview */}
-            {coverUrl && !errors.cover && (
+            {coverUrl && !imgError && (
               <div className="mt-3">
                 <p className="text-xs text-gray-400 mb-1">Preview:</p>
                 <img
                   src={coverUrl}
                   alt="Cover Preview"
                   className="w-full h-48 object-cover rounded-lg border border-gray-700"
-                  onError={(e) => (e.target.style.display = "none")}
+                  onError={() => setImgError(true)}
                 />
               </div>
             )}
@@ -141,10 +150,9 @@ function Create() {
               <option value="rock">Rock</option>
               <option value="other">Other</option>
             </select>
+
             {errors.genre && (
-              <p className="text-red-400 text-sm mt-1">
-                {errors.genre.message}
-              </p>
+              <p className="text-red-400 text-sm mt-1">{errors.genre.message}</p>
             )}
           </div>
 

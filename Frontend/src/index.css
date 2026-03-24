@@ -7,7 +7,7 @@ html,
 body {
   font-family: "Montserrat", sans-serif;
   scroll-behavior: smooth;
-  scrollbar-width: 0;
+  scrollbar-width: none;
 }
 
 @keyframes spinSlow {
