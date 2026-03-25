@@ -22,3 +22,21 @@ body {
 .animate-spin-slow {
   animation: spinSlow 8s linear infinite;
 }
+
+input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: #ec4899;
+  cursor: pointer;
+}
+
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

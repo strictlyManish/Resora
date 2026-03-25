@@ -16,10 +16,10 @@ export const fetchMusic = createAsyncThunk(
       return res.data.songs;
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Something went wrong",
+        error.response?.data?.message || "Something went wrong"
       );
     }
-  },
+  }
 );
 
 export const Currentsong = createAsyncThunk(
@@ -30,10 +30,10 @@ export const Currentsong = createAsyncThunk(
       return res.data.currentSong;
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Something went wrong",
+        error.response?.data?.message || "Something went wrong"
       );
     }
-  },
+  }
 );
 
 export const CreatePost = createAsyncThunk(
@@ -72,42 +72,39 @@ const musicSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // --- Fetch All Music ---
       .addCase(fetchMusic.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchMusic.fulfilled, (state, action) => {
         state.loading = false;
-        state.musicList = action.payload; // Saves to musicList array
+        state.musicList = action.payload;
       })
       .addCase(fetchMusic.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      
-      // --- Fetch Single Song ---
+
       .addCase(Currentsong.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(Currentsong.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentSong = action.payload; // Saves to currentSong object
+        state.currentSong = action.payload;
       })
       .addCase(Currentsong.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      
-      // --- Create Post ---
+
       .addCase(CreatePost.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(CreatePost.fulfilled, (state, action) => {
         state.loading = false;
-        state.musicList.push(action.payload)
+        state.musicList.push(action.payload);
       })
       .addCase(CreatePost.rejected, (state, action) => {
         state.loading = false;

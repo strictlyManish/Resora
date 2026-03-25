@@ -9,7 +9,7 @@ function Protected() {
   if (loading) {
     return (
       <main className="min-h-screen bg-[#120e12] flex items-center justify-center">
-        <Loader color="pink" />
+        <Loader color="pink" size={20} className="animate-spin"  />
       </main>
     );
   }
