@@ -1,17 +1,16 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMusic } from "../app/features/music/musicSlice";
+import { GetUserPost } from "../app/features/music/musicSlice";
 import { Link } from "react-router-dom";
 import { CirclePlay } from "lucide-react";
 
 function Posts() {
   const dispatch = useDispatch();
   
-  // Destructuring musicList and aliasing it as 'music'
-  const { musicList: music = [], error, loading } = useSelector((state) => state.music);
-
+  const { musicList: music, error, loading } = useSelector((state) => state.music);
+  console.log(music)
   useEffect(() => {
-    dispatch(fetchMusic());
+    dispatch(GetUserPost());
   }, [dispatch]);
 
   if (loading) return <p className="text-center p-10 font-medium">Loading hits...</p>;
@@ -25,10 +24,8 @@ function Posts() {
             key={song._id}
             to={`/songs/${song._id}`}
             style={{ backgroundImage: `url(${song.coverImage})` }}
-            // CHANGED: w-20 to w-full so it fills the grid column properly
             className="group w-full h-52 rounded-xl relative bg-cover bg-center overflow-hidden transition-all duration-300 hover:scale-[1.03] hover:shadow-xl shadow-black/50"
           >
-            {/* Dark gradient overlay for text readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
             
             <div className="absolute bottom-0 w-full p-3 flex items-center gap-2 backdrop-blur-md bg-white/10 border-t border-white/10">

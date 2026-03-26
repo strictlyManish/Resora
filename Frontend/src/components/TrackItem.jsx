@@ -5,7 +5,6 @@ const TrackItem = ({ track }) => {
   const containerRef = useRef(null);
   const audioRef = useRef(null);
   
-  // Custom UI State
   const [isPlaying, setIsPlaying] = useState(false);
 
   const [progress, setProgress] = useState(0);
@@ -18,7 +17,6 @@ const TrackItem = ({ track }) => {
       ([entry]) => {
         if (entry.isIntersecting) {
           audioRef.current?.play().catch(() => {
-            // Browser might block autoplay until user interacts
             setIsPlaying(false);
           });
           setIsPlaying(true);
@@ -34,7 +32,6 @@ const TrackItem = ({ track }) => {
     return () => observer.disconnect();
   }, []);
 
-  // Sync state with audio events
   const togglePlay = () => {
     if (isPlaying) {
       audioRef.current.pause();
@@ -63,12 +60,9 @@ const TrackItem = ({ track }) => {
       ref={containerRef}
       className="h-screen w-full snap-start relative flex flex-col justify-end bg-black overflow-hidden"
     >
-      {/* 1. Background Image with Blur Overlay */}
 
-      {/* 2. Custom UI Content */}
       <div className="z-10 p-6 w-full to-transparent">
         
-        {/* Track Info */}
         <div className="flex items-center gap-4 mb-6 transition-all">
           <div className="w-20 h-20 rounded-lg border border-white/20 overflow-hidden shadow-xl">
             <img src={track.coverImage} alt="cover" className="w-full h-full object-cover" />
@@ -87,7 +81,6 @@ const TrackItem = ({ track }) => {
           </div>
         </div>
 
-        {/* Interactive Controls Row */}
         <div className="flex items-center gap-4 w-ful">
           <button 
             onClick={togglePlay}
@@ -122,7 +115,6 @@ const TrackItem = ({ track }) => {
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
       </div>
 
-      {/* 3. Hidden Audio Element */}
       <audio
         ref={audioRef}
         src={track.audioUrl}
@@ -131,7 +123,6 @@ const TrackItem = ({ track }) => {
         loop
       />
 
-      {/* 4. The "Reels" Progress Indicator (Bottom Border) */}
       <div 
         className="absolute bottom-0 left-0 h-1 bg-pink-500 transition-all duration-200 shadow-[0_-2px_10px_rgba(236,72,153,0.5)]" 
         style={{ width: `${progress}%` }}

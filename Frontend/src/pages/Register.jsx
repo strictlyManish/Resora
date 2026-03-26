@@ -40,7 +40,6 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-[#120e12] px-4 selection:bg-pink-500/30">
       <div className="w-full max-w-md space-y-8">
         
-        {/* Your Original Logo & Branding */}
         <div className="text-center">
           <div className="flex justify-center mb-6">
             <img src="/Logo.png" alt="logo" className="h-12 w-12 object-contain" />
@@ -51,7 +50,6 @@ const Register = () => {
           </p>
         </div>
 
-        {/* Animated Error Alert */}
         {visibleError && (
           <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-red-400 text-sm animate-in slide-in-from-top-2">
             <AlertCircle size={18} className="shrink-0" />
@@ -61,7 +59,6 @@ const Register = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           
-          {/* Username */}
           <div className="space-y-1">
             <div className="relative group">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-pink-500 transition-colors" size={18} />
@@ -78,7 +75,6 @@ const Register = () => {
             {errors.username && <p className="text-red-400 text-xs ml-1">{errors.username.message}</p>}
           </div>
 
-          {/* Email */}
           <div className="space-y-1">
             <div className="relative group">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-pink-500 transition-colors" size={18} />
@@ -95,14 +91,13 @@ const Register = () => {
             {errors.email && <p className="text-red-400 text-xs ml-1">{errors.email.message}</p>}
           </div>
 
-          {/* Password */}
           <div className="space-y-1">
             <div className="relative group">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-pink-500 transition-colors" size={18} />
               <input
                 {...register("password", {
                   required: "Password is required",
-                  minLength: { value: 6, message: "Password must be at least 6 characters" }
+                  minLength: { value: 4, message: "Password must be at least 4 characters" }
                 })}
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
@@ -119,7 +114,6 @@ const Register = () => {
             {errors.password && <p className="text-red-400 text-xs mt-1 ml-1">{errors.password.message}</p>}
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}

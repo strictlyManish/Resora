@@ -1,5 +1,5 @@
 const express = require("express");
-const UpdateprofileController = require("../controller/user.controller");
+const {UpdateprofileController, GetUserpostController} = require("../controller/user.controller");
 const AuthMiddleware = require("../middlewares/auth.middleware");
 const multer = require("multer");
 
@@ -14,5 +14,10 @@ userRoutes.post(
   upload.single("profileImage"),
   UpdateprofileController,
 );
+
+
+userRoutes.get('/posts',AuthMiddleware,GetUserpostController)
+
+
 
 module.exports = userRoutes;

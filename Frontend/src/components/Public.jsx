@@ -14,7 +14,6 @@ function Public() {
     );
   }
 
-  // 🔥 If user already logged in → redirect to home
   if (user) {
     return <Navigate to="/" replace />;
   }

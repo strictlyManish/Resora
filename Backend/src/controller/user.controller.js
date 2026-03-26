@@ -1,5 +1,5 @@
 const userModel = require("../model/app.model");
-const uploadImage = require("../service/imagekit"); // your upload function
+const uploadImage = require("../service/imagekit");
 
 async function UpdateprofileController(req, res) {
   try {
@@ -53,4 +53,26 @@ async function UpdateprofileController(req, res) {
   }
 }
 
-module.exports = UpdateprofileController;
+async function GetUserpostController(req, res) {
+  try {
+    const { id } = req.user;
+
+    const user = await userModel.findById(id)
+      .select("posts")
+      .populate({
+        path: "posts",
+        select: "title artist audioUrl coverImage genre",
+      })
+      .lean();
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({meeage:'Post fetched sucessfully', posts: user.posts });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
+module.exports = {UpdateprofileController,GetUserpostController};

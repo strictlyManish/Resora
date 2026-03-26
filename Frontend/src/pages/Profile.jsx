@@ -68,7 +68,6 @@ function Profile() {
       </header>
 
       <main>
-        {/* Profile Info Section */}
         <section className="px-6 pt-4 pb-6">
           <div className="flex items-center gap-8">
             <div className="relative shrink-0">
@@ -129,9 +128,6 @@ function Profile() {
           <div className="min-h-[300px] bg-black/20">
             {user?.posts?.length > 0 ? (
               <div className="w-full">
-                {/* IMPORTANT: The 'Posts' component already has its own grid. 
-                  Don't wrap it in another grid or it will look tiny.
-                */}
                 <Posts userId={user._id} />
               </div>
             ) : (

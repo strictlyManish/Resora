@@ -43,6 +43,7 @@ async function UserPostController(req, res) {
     res.status(500).json({ error: err.message });
   }
 }
+
 async function GetAllSongs(req, res) {
   try {
     const songs = await SongModel.find().sort({ createdAt: -1 });

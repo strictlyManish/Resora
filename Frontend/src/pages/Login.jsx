@@ -27,7 +27,6 @@ const Login = () => {
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 
-  // Correct implementation of the timed error
   useEffect(() => {
     if (error) {
       setVisibleError(error?.message || "Login failed");
@@ -45,7 +44,6 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#120e12] px-4 selection:bg-pink-500/30">
       <div className="w-full max-w-md space-y-8">
-        {/* Header */}
         <div className="text-center">
           <div className="inline-flex p-3 rounded-2xl bg-gradient-to-tr  mb-4">
             <img
@@ -60,7 +58,6 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Error Alert with Animation */}
         {visibleError && (
           <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-red-400 text-sm animate-in slide-in-from-top-2 duration-300">
             <AlertCircle size={18} className="shrink-0" />

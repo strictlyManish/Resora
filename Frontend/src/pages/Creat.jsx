@@ -46,7 +46,6 @@ function Create() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
-          {/* Title */}
           <div>
             <label className="text-sm text-gray-300 mb-1 flex items-center gap-2">
               <Music size={16} /> Title
@@ -61,7 +60,6 @@ function Create() {
             )}
           </div>
 
-          {/* Artist */}
           <div>
             <label className="text-sm text-gray-300 mb-1 flex items-center gap-2">
               <User size={16} /> Artist
@@ -76,7 +74,6 @@ function Create() {
             )}
           </div>
 
-          {/* Audio */}
           <div>
             <label className="text-sm text-gray-300 mb-1 flex items-center gap-2">
               <Upload size={16} /> Audio File
@@ -96,7 +93,6 @@ function Create() {
             )}
           </div>
 
-          {/* Cover URL */}
           <div>
             <label className="text-sm text-gray-300 mb-1 flex items-center gap-2">
               <Image size={16} /> Cover Image URL
@@ -131,7 +127,6 @@ function Create() {
             )}
           </div>
 
-          {/* Genre */}
           <div>
             <label className="text-sm text-gray-300 mb-1 flex items-center gap-2">
               <ListMusic size={16} /> Genre
@@ -156,7 +151,6 @@ function Create() {
             )}
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={isSubmitting}

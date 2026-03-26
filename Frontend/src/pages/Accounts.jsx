@@ -34,7 +34,6 @@ function Accounts() {
     }
   });
 
-  const profileImage = watch("profileImage");
 
   const handleImagePreview = (e) => {
     const file = e.target.files[0];
@@ -43,7 +42,6 @@ function Accounts() {
     }
   };
 
-  // ✅ REAL SUBMIT (UI untouched)
   const onSubmit = async (data) => {
     setIsSubmitting(true);
 
@@ -71,7 +69,6 @@ function Accounts() {
   return (
     <div className="bg-[#120e12] text-white min-h-screen flex flex-col max-w-2xl mx-auto shadow-2xl">
       
-      {/* Header */}
       <header className="px-4 py-4 flex items-center gap-4 sticky top-0 bg-[#120e12]/80 backdrop-blur-md z-20 border-b border-white/5">
         <button 
           onClick={() => navigate("/profile")} 
@@ -85,7 +82,6 @@ function Accounts() {
       <main className="flex-1 px-6 py-8">
         <form className="space-y-8" onSubmit={handleSubmit(onSubmit)}>
           
-          {/* Profile Picture Section */}
           <section className="flex flex-col items-center">
             <div className="relative group">
               <div className={`w-32 h-32 rounded-full bg-white/5 border-2 border-dashed flex items-center justify-center overflow-hidden transition-all 
@@ -119,7 +115,6 @@ function Accounts() {
             {!errors.profileImage && <p className="mt-3 text-xs text-gray-400">Tap the camera to change photo</p>}
           </section>
 
-          {/* Bio Section */}
           <section className="space-y-2">
             <div className="flex justify-between items-end ml-1">
               <label className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Bio</label>
@@ -139,7 +134,6 @@ function Accounts() {
             {errors.bio && <p className="text-xs text-red-400 font-medium ml-1">{errors.bio.message}</p>}
           </section>
 
-          {/* Update Button */}
           <button 
             disabled={isSubmitting}
             type="submit"
@@ -155,7 +149,6 @@ function Accounts() {
 
           <hr className="border-white/5" />
 
-          {/* Danger Zone (unchanged) */}
           <section className="pt-3">
             <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-3">
               <div className="flex items-center gap-3 text-red-400 mb-4">
