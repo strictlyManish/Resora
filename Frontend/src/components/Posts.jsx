@@ -8,10 +8,9 @@ function Posts() {
   const dispatch = useDispatch();
   
   const { musicList: music, error, loading } = useSelector((state) => state.music);
-  console.log(music)
   useEffect(() => {
     dispatch(GetUserPost());
-  }, [dispatch]);
+  }, []);
 
   if (loading) return <p className="text-center p-10 font-medium">Loading hits...</p>;
   if (error) return <p className="text-red-500 text-center p-10">Error: {error}</p>;

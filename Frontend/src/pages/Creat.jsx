@@ -21,7 +21,7 @@ function Create() {
 
   const onSubmit = (data) => {
     dispatch(CreatePost(data));
-    navigate("/")
+    if(!loading) navigate("/")
   };
 
   const coverUrl = watch("coverImage");

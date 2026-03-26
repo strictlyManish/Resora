@@ -8,8 +8,9 @@ import {
   LogOut,
   Plus
 } from "lucide-react";
-import { logoutUser } from "../app/features/auth/userAuth";
+import { getUser, logoutUser } from "../app/features/auth/userAuth";
 import Posts from "../components/Posts";
+import { useEffect } from "react";
 
 const StatItem = ({ label, count }) => (
   <div className="flex flex-col items-center">
@@ -21,9 +22,13 @@ const StatItem = ({ label, count }) => (
 );
 
 function Profile() {
-  const { user, loading } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const user = useSelector((state) => state.auth.user);
+  const loading = useSelector((state) => state.auth.loading);
+
+
 
   if (loading) {
     return (
@@ -44,8 +49,7 @@ function Profile() {
   const profileImage = user?.profileImage?.trim() ? user.profileImage : null;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white max-w-2xl mx-auto border-x border-white/5 shadow-2xl">
-      
+    <div className="min-h-screen bg-[#120e12] text-white max-w-2xl mx-auto border-x border-white/5 shadow-2xl">
       {/* Header */}
       <header className="px-4 py-4 flex items-center justify-between sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-xl z-20">
         <div className="flex items-center gap-3">
@@ -55,9 +59,7 @@ function Profile() {
           >
             <ChevronLeft size={24} />
           </button>
-          <h1 className="text-lg font-bold tracking-tight">
-            {user.username}
-          </h1>
+          <h1 className="text-lg font-bold tracking-tight">{user.username}</h1>
         </div>
         <button
           onClick={() => dispatch(logoutUser())}
@@ -127,17 +129,17 @@ function Profile() {
 
           <div className="min-h-[300px] bg-black/20">
             {user?.posts?.length > 0 ? (
-              <div className="w-full">
+              <div className="w-full h-screen">
                 <Posts userId={user._id} />
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-20 px-10 text-center">
                 <div className="w-16 h-16 rounded-full border-2 border-dashed border-gray-700 flex items-center justify-center mb-4">
-                   <Plus className="text-gray-600" />
+                  <Plus className="text-gray-600" />
                 </div>
                 <p className="text-gray-500 font-medium">No tracks uploaded yet</p>
-                <button 
-                  onClick={() => navigate('/upload')}
+                <button
+                  onClick={() => navigate("/upload")}
                   className="mt-4 text-pink-500 font-bold text-sm hover:underline"
                 >
                   Upload your first song
