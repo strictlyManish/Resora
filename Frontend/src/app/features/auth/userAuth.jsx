@@ -42,6 +42,7 @@ export const getUser = createAsyncThunk("auth/getUser", async (_, thunkAPI) => {
   }
 });
 
+
 export const logoutUser = createAsyncThunk(
   "auth/logout",
   async (_, thunkAPI) => {
@@ -53,6 +54,7 @@ export const logoutUser = createAsyncThunk(
     }
   },
 );
+
 
 
 
@@ -120,7 +122,7 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.rejected, (state) => {
         state.loading = false;
-      });
+      })
   },
 });
 

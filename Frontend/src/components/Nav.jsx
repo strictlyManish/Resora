@@ -8,12 +8,12 @@ function Nav() {
 
   return (
     <div
-      className="fixed z-20 bottom-6 left-1/2 -translate-x-1/2 
+      className="fixed z-20 bottom-4 left-1/2 -translate-x-1/2 
                  px-2 py-2 
                  bg-white/10 backdrop-blur-md 
                  border border-white/20 
                  rounded-full 
-                 shadow-lg text-white"
+                 shadow-lg text-white "
     >
       <div className="flex gap-5">
         <NavLink

@@ -82,6 +82,7 @@ async function RegisterController(req, res) {
  * @route   POST /api/auth/login
  * @access  public
  */
+
 async function LoginController(req, res) {
   try {
     const { email, password } = req.body;
@@ -93,7 +94,7 @@ async function LoginController(req, res) {
       });
     }
 
-    const user = await userModel.findOne({ email });
+    const user = await userModel.findOne({ email }).populate("posts");
 
     if (!user) {
       return res.status(401).json({
@@ -126,14 +127,9 @@ async function LoginController(req, res) {
     return res.status(200).json({
       success: true,
       message: "Login successful",
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-      },
+      user
     });
   } catch (error) {
-    console.error("LOGIN ERROR:", error);
     return res.status(500).json({
       success: false,
       message: "Server error",
@@ -197,7 +193,6 @@ async function GetUserController(req, res) {
 
     const user = await userModel
       .findById(req.user.id)
-      .select("_id username email profileImage bio followers following posts");
 
     if (!user) {
       return res.status(404).json({
@@ -214,6 +209,14 @@ async function GetUserController(req, res) {
       message: "Something went wrong",
     });
   }
+}
+
+async function CurrentLoginUser(req,res) {
+  const {id} = req.user;
+
+  const Loginuser = await userModel.findById(id);
+
+  return Loginuser
 }
 
 module.exports = {

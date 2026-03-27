@@ -8,9 +8,8 @@ import {
   LogOut,
   Plus
 } from "lucide-react";
-import { getUser, logoutUser } from "../app/features/auth/userAuth";
+import { logoutUser } from "../app/features/auth/userAuth";
 import Posts from "../components/Posts";
-import { useEffect } from "react";
 
 const StatItem = ({ label, count }) => (
   <div className="flex flex-col items-center">
@@ -27,9 +26,7 @@ function Profile() {
 
   const user = useSelector((state) => state.auth.user);
   const loading = useSelector((state) => state.auth.loading);
-
-
-
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-[#120e12] flex items-center justify-center">
@@ -130,7 +127,7 @@ function Profile() {
           <div className="min-h-[300px] bg-black/20">
             {user?.posts?.length > 0 ? (
               <div className="w-full h-screen">
-                <Posts userId={user._id} />
+                <Posts/>
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-20 px-10 text-center">
